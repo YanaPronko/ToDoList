@@ -3,13 +3,14 @@ $bright-color: #8A33FD;
 $dark-color: #3C4242;
 $extra-light-color: #FFFFFF;
 $light-color: #F6F6F6;
+$bg-color: #E2E2E2;
 
 // Минимальная ширина
 $minWidth: 320;
 // Ширина полотна (макету)
 $maxWidth: 1440;
 // Ширина контейнера (0 = нет ограничения)
-$maxWidthContainer: 1240;
+$maxWidthContainer: 768;
 
 $containerPadding: 30;
 // Ширина первого брейкпоинта

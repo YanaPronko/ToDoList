@@ -20,12 +20,15 @@
     <main class="todo">
       <div class="todo__container">
         <form action="#" class="todo__form">
-          <input type="text" class="todo__input">
-          <button class="todo__button">Add</button>
+          <input type="text" placeholder="Add new task" name="input" class="todo__input">
+          <button disabled class="todo__button btn">Add</button>
         </form>
         <ul class="todo__list">
-          <li class="todo__task">
-            Task 1
+          <!-- <li class="todo__task task">
+            <input id="1" type="checkbox" class="task__checkbox">
+            <label for="1" class="task__label">
+              Task 1
+            </label>
             <span><i class="fa-regular fa-rectangle-xmark"></i></span>
           </li>
           <li class="todo__task">
@@ -35,8 +38,22 @@
           <li class="todo__task">
             Task 3
             <span><i class="fa-regular fa-rectangle-xmark"></i></span>
-          </li>
+          </li> -->
         </ul>
+        <div class="todo__buttons">
+          <div class="todo__option">
+            <input type="radio" name="radio" value="all" class="todo__radio">
+            <button class="btn todo__filter">All</button>
+          </div>
+          <div class="todo__option">
+            <input type="radio" name="radio" value="not" class="todo__radio">
+            <button class="btn todo__filter">Not completed</button>
+          </div>
+          <div class="todo__option">
+            <input type="radio" name="radio" value="done" class="todo__radio">
+            <button class="btn todo__filter">Completed</button>
+          </div>
+        </div>
       </div>
     </main>
     <footer class="footer">
