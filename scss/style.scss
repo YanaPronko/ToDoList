@@ -1,0 +1,73 @@
+@use "sass:math";
+
+@import "_fonts";
+
+@import "_reset";
+
+@import "_functions";
+
+@import "_variables";
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: toRem(16);
+  color: $text-color;
+  scroll-behavior: smooth;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: clip;
+  main {
+    flex-grow: 1;
+  }
+}
+
+[class*="__container"] {
+  margin: 0 auto;
+  max-width: #{$containerWidth}px;
+  padding-left: toRem(15);
+  padding-right: toRem(15);
+}
+
+.header {
+  padding: toRem(20) 0;
+  &__title {
+    font-weight: 700;
+    font-size: toRem(26);
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+  }
+}
+.todo {
+  &__container {
+  }
+
+  &__form {
+  }
+
+  &__input {
+  }
+
+  &__button {
+  }
+
+  &__list {
+  }
+
+  &__task {
+  }
+}
+.fa-regular {
+}
+.fa-rectangle-xmark {
+}
+.footer {
+  &__container {
+  }
+}

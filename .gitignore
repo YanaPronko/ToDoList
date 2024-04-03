@@ -1,0 +1,9 @@
+/build
+/node_modules
+.idea
+.vscode
+/storybook-static
+/reports
+/coverage
+/source
+/info.txt
