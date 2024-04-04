@@ -139,6 +139,7 @@ body {
   border: 0.125rem solid #8A33FD;
   padding: 0.625rem 1rem;
   -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
   line-height: 1.2;
 }
@@ -160,6 +161,7 @@ body {
 }
 .todo__input::placeholder {
   -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .todo__input:focus {
@@ -197,12 +199,14 @@ body {
       -ms-flex-align: center;
           align-items: center;
   gap: var(--gap);
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 .todo__option {
   position: relative;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 1 calc(100% - var(--gap) * (var(--col) - 1) / var(--col));
-          flex: 0 1 calc(100% - var(--gap) * (var(--col) - 1) / var(--col));
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
 }
 .todo__radio {
   -webkit-appearance: none;
@@ -216,6 +220,7 @@ body {
   border-radius: 0.625rem;
   cursor: pointer;
   -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .todo__radio:checked + .todo__filter {
@@ -224,6 +229,7 @@ body {
 .todo__filter {
   height: 100%;
   width: 100%;
+  white-space: nowrap;
 }
 
 .btn {
@@ -233,6 +239,7 @@ body {
   color: #FFFFFF;
   border-radius: 0.625rem;
   -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .btn:hover {
@@ -251,6 +258,15 @@ body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.625rem;
+}
+.task__input-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -305,6 +321,7 @@ body {
       -ms-transform: translate(-50%, -50%) scale(0);
           transform: translate(-50%, -50%) scale(0);
   -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .task__checkbox:checked::before {
@@ -320,6 +337,7 @@ body {
   font-size: 1.375rem;
   cursor: pointer;
   -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .fa-rectangle-xmark:hover {
@@ -331,5 +349,6 @@ body {
 
 .footer__container {
   padding: 1.25rem 0;
+  font-size: 0.875rem;
   text-align: center;
 }

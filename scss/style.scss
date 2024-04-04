@@ -93,11 +93,12 @@ body {
     display: flex;
     align-items: center;
     gap: var(--gap);
+    flex-wrap: wrap;
   }
 
   &__option {
     position: relative;
-    flex: 0 1 calc(100% - (var(--gap) * (var(--col) - 1)) / var(--col));
+    flex: 1 0 0%;
   }
   &__radio {
     appearance: none;
@@ -119,6 +120,7 @@ body {
   &__filter {
     height: 100%;
     width: 100%;
+    white-space: nowrap;
   }
 }
 
@@ -144,6 +146,11 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: toRem(10);
+  &__input-wrapper{
+    display: flex;
+    align-items: center;
+    gap: toRem(10);
+  }
   &__label {
     display: flex;
     align-items: center;
@@ -202,6 +209,7 @@ body {
 .footer {
   &__container {
     padding: toRem(20) 0;
+    font-size: toRem(14);
     text-align: center;
   }
 }
