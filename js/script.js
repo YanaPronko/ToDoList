@@ -7,16 +7,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const todoList = document.querySelector('.todo__list');
   const filterContainer = document.querySelector('.todo__buttons');
 
-  // initToDo();
+  let dataTasks = JSON.parse(localStorage.getItem('todo')) || [];
+  let filter = getData("filter") || '';
 
-  let id = 0;
-  let allTasks = [];
+  initToDo(filter, dataTasks);
 
-  if (todoForm) {
-    todoForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-    })
-  }
+  if (todoForm) todoForm.addEventListener('submit', (e) => e.preventDefault());
 
   if (addInput) {
     addInput.addEventListener('input', () => {
@@ -24,77 +20,98 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (addBtn) {
-    addBtn.addEventListener('click', addTask);
-  }
-
-  if (todoList) {
-    todoList.addEventListener('click', handleListClick);
-  }
-
-  if (filterContainer) {
-    filterContainer.addEventListener('click', handleFilter);
-  }
-
-  // function initToDo() {
-  //   const content = localStorage.getItem("todoList");
-  //   if (content) {
-  //     todoList.innerHTML = content;
-  //   }
-  // }
+  if (addBtn) addBtn.addEventListener('click', addTask);
+  if (todoList) todoList.addEventListener('click', handleListClick);
+  if (filterContainer) filterContainer.addEventListener('click', handleFilter);
 
   function addTask() {
     if (!addInput.value.trim()) {
       addBtn.disabled = true;
     } else {
-      const task = createTask();
-      todoList.append(task);
-      allTasks.push(task);
+      const data = {
+        id: Date.now(),
+        text: addInput.value.trim(),
+      };
+      dataTasks.push(data);
+      saveData(dataTasks);
+      const savedFilter = getData('filter');
+      sortTask(savedFilter, dataTasks);
+      // renderDataTasks(dataTasks);
       addBtn.disabled = true;
       addInput.value = '';
-      saveData(allTasks);
     }
   }
 
   function saveData(list) {
-    localStorage.setItem("todoList", JSON.stringify(list));
+    localStorage.setItem('todo', JSON.stringify(list));
   }
 
-  function createTask() {
-    const task = document.createElement("li");
-    task.id = ++id;
-    task.classList.add("todo__task", "task");
-    task.innerHTML = `
-            <div class="task__input-wrapper">
-              <input id=${++id} type="checkbox" class="task__checkbox">
-              <label for=${id} class="task__label">${addInput.value.trim()}</label>
-            </div>
-            <span class="delete"><i class="fa-regular fa-rectangle-xmark"></i></span>
-          `;
+  function getData(key) {
+    return localStorage.getItem(key);
+  }
+
+  function renderDataTasks(arr) {
+    const tasksForRender = arr.map(createTask);
+    updateTodoList(tasksForRender);
+    return tasksForRender;
+  }
+
+  function createTask(item) {
+    const task = document.createElement('li');
+    task.classList.add('todo__task', 'task');
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.id = item.id;
+    if (item.done) {
+      input.setAttribute('checked', null);
+    }
+    input.classList.add('task__checkbox');
+    const label = `<label for=${item.id} class="task__label">${item.text}</label>`;
+    const taskWrapper = document.createElement('div');
+    taskWrapper.classList.add('task__input-wrapper');
+    taskWrapper.append(input);
+    taskWrapper.innerHTML += label;
+    const span = `<span class="delete"><i class="fa-regular fa-rectangle-xmark"></i></span>`;
+    task.append(taskWrapper);
+    task.innerHTML += span;
     return task;
   }
 
   function handleListClick(e) {
+    const savedFilter = getData('filter');
     const deleteBtn = e.target.closest('.delete');
     if (deleteBtn) {
-      deleteBtn.parentElement.remove();
-      allTasks = allTasks.filter(task => task.id !== deleteBtn.parentElement.id);
+      const input = deleteBtn.parentElement.querySelector('input');
+      dataTasks = dataTasks.filter((task) => task.id !== parseInt(input.id));
+      saveData(dataTasks);
+      sortTask(savedFilter, dataTasks);
     }
-    const listItem = e.target.closest(".todo__task");
-    const li = allTasks.find(item => item.id === listItem.id);
-    li.querySelector('input').checked = listItem.querySelector('input').checked;
-    saveData(allTasks);
+
+    const task = e.target.closest('.task__input-wrapper');
+    if (task) {
+      const input = task.querySelector('input');
+      const inputStatus = input.checked;
+      const inputId = parseInt(input.id);
+      const index = dataTasks.findIndex((item) => item.id === inputId);
+      if (index !== -1) {
+        dataTasks[index].done = inputStatus;
+      }
+      saveData(dataTasks);
+      sortTask(savedFilter, dataTasks);
+    }
     return;
   }
 
   function handleFilter(e) {
-    const option = e.target.closest('.todo__option');
-    console.log(option.firstElementChild.value);
-    sortTask(option.firstElementChild.value, allTasks);
+    const optionFilter = e.target.value;
+    localStorage.setItem('filter', optionFilter);
+    const savedFilter = getData('filter');
+    sortTask(savedFilter, dataTasks);
   }
 
   function updateTodoList(items) {
-    todoList.innerHTML = "";
+    todoList.innerHTML = '';
     items.forEach((item) => {
       return todoList.append(item);
     });
@@ -103,22 +120,29 @@ window.addEventListener('DOMContentLoaded', () => {
   function sortTask(filter, arr) {
     switch (filter) {
       case 'all':
-        updateTodoList(arr);
+        renderDataTasks(arr);
         break;
       case 'done':
-        const checkedTasks = arr.filter(item => item.querySelector("input:checked"));
-        console.log(checkedTasks);
-        updateTodoList(checkedTasks);
+        const checkedTasks = arr.filter(item => item.done === true);
+        renderDataTasks(checkedTasks);
         break;
       case 'not':
-        const activeTasks = arr.filter(item => !item.querySelector('input:checked'))
-        updateTodoList(activeTasks);
+        const activeTasks = arr.filter(item => !item.done);
+        renderDataTasks(activeTasks);
         break;
+      default:
+        renderDataTasks(arr);
     }
   }
 
+  function initToDo(filter, arr) {
+    sortTask(filter, arr);
+    const filterOptions = [...filterContainer.children];
+    filterOptions.forEach(option => {
+      option.firstElementChild.checked = false;
+      if (option.firstElementChild.value === filter) {
+        option.firstElementChild.checked = true;
+      };
+    })
+  }
 });
-
-
-
-

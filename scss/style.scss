@@ -146,6 +146,8 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: toRem(10);
+  padding: toRem(15) 0;
+  border-bottom: toRem(2) solid $bright-color;
   &__input-wrapper{
     display: flex;
     align-items: center;
